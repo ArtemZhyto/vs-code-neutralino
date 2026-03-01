@@ -1,0 +1,13 @@
+# Neutralino runtime files
+.tmp/
+neutralinojs.log
+
+# Neutralino binaries (download via: neu update)
+bin/
+
+# Build output
+build/
+
+# OS files
+.DS_Store
+Thumbs.db

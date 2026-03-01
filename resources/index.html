@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeXplorer</title>
+  <link rel="icon" href="data:,">
+  <!-- CodeMirror core -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+  <!-- CodeMirror themes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/one-dark.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/eclipse.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+
+  <!-- ═══════════════════════ TITLE BAR ═══════════════════════ -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <span class="app-name">CodeXplorer</span>
+    </div>
+    <div class="titlebar-center">
+      <span id="titleFilePath" class="title-filepath"></span>
+    </div>
+    <div class="titlebar-right">
+      <button id="themeToggleBtn" class="tb-btn theme-toggle-btn" title="Toggle Light/Dark">Dark</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ MAIN LAYOUT ═══════════════════════ -->
+  <div class="app-layout">
+
+    <!-- Activity Bar (far left strip) -->
+    <div class="activity-bar">
+      <button class="activity-btn active" data-panel="explorer" title="Explorer">EX</button>
+      <button class="activity-btn" data-panel="search" title="Search (coming soon)">SR</button>
+    </div>
+
+    <!-- ── LEFT SIDEBAR ── -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-section-title">EXPLORER</span>
+        <div class="sidebar-header-btns">
+          <button id="addFolderBtn" class="tb-btn" title="Open Folder">+Folder</button>
+          <button id="newFileBtn"   class="tb-btn" title="New File">+File</button>
+          <button id="refreshTreeBtn" class="tb-btn" title="Refresh Tree">↺</button>
+        </div>
+      </div>
+
+      <div id="fileTree" class="file-tree">
+        <div class="no-folder-msg">
+          <p>No folder opened</p>
+          <button id="openFolderEmptyBtn" class="btn-primary">Open Folder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar resize handle -->
+    <div class="resize-handle" id="sidebarResizeHandle"></div>
+
+    <!-- ── EDITOR AREA (center) ── -->
+    <div class="editor-area" id="editorArea">
+
+      <!-- Tabs bar -->
+      <div class="tabs-bar" id="tabsBar">
+        <div class="tabs-list" id="tabsList"></div>
+        <div class="tabs-bar-actions">
+          <button id="saveFileBtn" class="tb-btn" title="Save (Ctrl+S)">Save</button>
+          <button id="runFileBtn"  class="tb-btn run-btn" title="Run File (Ctrl+Enter)">&#9654; Run</button>
+        </div>
+      </div>
+
+      <!-- Code editor wrapper -->
+      <div class="code-editor-wrap" id="codeEditorWrap">
+        <!-- Welcome screen shown when no file is open -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-content">
+            <h1>CodeXplorer</h1>
+            <p>A VS Code-like IDE powered by NeutralinoJS + Gemini AI</p>
+            <div class="welcome-actions">
+              <button id="welcomeOpenFolder" class="btn-primary">Open Folder</button>
+            </div>
+            <div class="welcome-shortcuts">
+              <div class="shortcut-row"><kbd>Ctrl+S</kbd> Save file</div>
+              <div class="shortcut-row"><kbd>Ctrl+Enter</kbd> Run file</div>
+              <div class="shortcut-row"><kbd>Ctrl+`</kbd> Toggle terminal</div>
+            </div>
+          </div>
+        </div>
+        <!-- CodeMirror will replace this textarea -->
+        <textarea id="codeTextarea"></textarea>
+      </div>
+
+      <!-- Terminal panel -->
+      <div class="terminal-panel" id="terminalPanel">
+        <div class="terminal-header">
+          <div class="terminal-tabs">
+            <span class="terminal-tab active">TERMINAL</span>
+          </div>
+          <div class="terminal-header-actions">
+            <button id="runCurrentBtn"  class="run-btn-sm" title="Run current file">&#9654; Run</button>
+            <button id="clearTermBtn"   class="tb-btn" title="Clear terminal">Clear</button>
+            <button id="toggleTermBtn"  class="tb-btn" title="Toggle">&#8964;</button>
+          </div>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div id="terminalOutput" class="terminal-output"></div>
+          <div class="terminal-input-row">
+            <span class="terminal-caret">›</span>
+            <input type="text" id="terminalInput" class="terminal-input" placeholder="Type a command and press Enter...">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /editor-area -->
+
+    <!-- AI panel resize handle -->
+    <div class="resize-handle" id="aiResizeHandle"></div>
+
+    <!-- ── RIGHT: AI PANEL (HuggingFace) ── -->
+    <div class="ai-panel" id="aiPanel">
+      <div class="ai-panel-header">
+        <span class="ai-panel-title">AI Assistant</span>
+        <button id="collapseAiBtn" class="tb-btn" title="Collapse AI Panel">&#9664;</button>
+      </div>
+
+      <!-- API key config -->
+      <div class="ai-config">
+        <div class="config-section">
+          <label class="config-label">HuggingFace API Key</label>
+          <div class="api-key-input-row">
+            <input type="password" id="hfApiKey" class="config-input" placeholder="hf_…  (from hf.co/settings/tokens)">
+            <button id="saveApiKeyBtn" class="btn-sm-primary">Save</button>
+          </div>
+          <div id="apiKeyStatus" class="api-status"></div>
+        </div>
+      </div>
+
+      <!-- Chat messages area -->
+      <div class="ai-chat-area" id="aiChatArea">
+        <div class="ai-welcome-msg">
+          <p>AI coding assistant powered by <strong>HuggingFace</strong>.</p>
+          <p>Describe what code you want, ask me to explain or debug existing code, and I'll help.</p>
+          <p class="hint">Get a free API key at <strong>hf.co/settings/tokens</strong></p>
+          <p class="hint">Tip: Use <strong>Ctrl+Enter</strong> in the prompt box to generate.</p>
+        </div>
+      </div>
+
+      <!-- Prompt input area -->
+      <div class="ai-input-section">
+        <textarea
+          id="aiPromptInput"
+          class="ai-prompt-textarea"
+          placeholder="Describe the code to generate, or ask a question about the current file…"
+          rows="4"
+        ></textarea>
+        <div class="ai-btn-row">
+          <button id="insertCodeBtn"   class="btn-sm-secondary" disabled title="Insert last generated code at cursor">Insert</button>
+          <button id="clearChatBtn"    class="btn-sm-secondary">Clear</button>
+          <button id="generateCodeBtn" class="btn-sm-primary">Generate</button>
+        </div>
+      </div>
+    </div><!-- /ai-panel -->
+
+  </div><!-- /app-layout -->
+
+  <!-- ═══════════════════════ STATUS BAR ═══════════════════════ -->
+  <div class="status-bar">
+    <div class="status-left">
+      <span id="statusBranch">No folder</span>
+      <span class="status-sep">|</span>
+      <span id="statusMsg">Ready</span>
+    </div>
+    <div class="status-right">
+      <span id="statusLang">Plain Text</span>
+      <span class="status-sep">|</span>
+      <span id="statusCursor">Ln 1, Col 1</span>
+      <span class="status-sep">|</span>
+      <span>UTF-8</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ CONTEXT MENU ═══════════════════════ -->
+  <div id="contextMenu" class="context-menu">
+    <button class="ctx-item" id="ctxOpen">Open / Edit</button>
+    <div class="ctx-separator"></div>
+    <button class="ctx-item" id="ctxNewFile">New File Here</button>
+    <button class="ctx-item" id="ctxNewFolder">New Folder Here</button>
+    <div class="ctx-separator"></div>
+    <button class="ctx-item" id="ctxRename">Rename</button>
+    <button class="ctx-item danger" id="ctxDelete">Delete</button>
+  </div>
+
+  <!-- ═══════════════════════ VIDEO MODAL ═══════════════════════ -->
+  <div id="videoModal" class="video-modal">
+    <div class="video-container">
+      <div class="video-header">
+        <span id="videoTitle">Now Playing</span>
+        <button id="closeVideoBtn">✕</button>
+      </div>
+      <video id="videoPlayer" controls autoplay>
+        <source id="videoSource" src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+  <!-- CodeMirror core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <!-- Language modes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/shell/shell.min.js"></script>
+  <!-- simple-mode addon must come before any mode that uses defineSimpleMode (e.g. rust) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/mode/simple.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/rust/rust.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/go/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
+  <!-- CodeMirror addons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+  <!-- Neutralino + App -->
+  <script src="js/neutralino.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
