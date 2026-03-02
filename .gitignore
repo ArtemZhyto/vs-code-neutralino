@@ -6,7 +6,7 @@ neutralinojs.log
 bin/
 
 # Build output
-build/
+dist/
 
 # OS files
 .DS_Store

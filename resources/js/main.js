@@ -5,7 +5,7 @@
 
 // ── State ──────────────────────────────────────────────────────────────────
 const state = {
-  // Workspace
+	// Workspace
   workspaceFolders: [],   // [{name, path}]  (neutralino) | [{name, handle}] (web)
   expandedNodes:    new Set(),
 
@@ -98,9 +98,14 @@ function toggleTheme() { applyTheme(state.theme === 'dark' ? 'light' : 'dark'); 
 // ============================================================================
 
 function initCodeMirror() {
+	const textarea = document.getElementById('codeTextarea');
+  if (!textarea) return;
+
+  const cmTheme = state.theme === 'dark' ? 'one-dark' : 'eclipse';
+
   editor = CodeMirror.fromTextArea(document.getElementById('codeTextarea'), {
     lineNumbers:      true,
-    theme:            state.theme === 'dark' ? 'one-dark' : 'eclipse',
+    theme:            cmTheme,
     matchBrackets:    true,
     autoCloseBrackets:true,
     styleActiveLine:  true,
@@ -1193,6 +1198,7 @@ function bindAllEvents() {
   document.getElementById('addFolderBtn').addEventListener('click', addWorkspaceFolder);
   document.getElementById('newFileBtn').addEventListener('click', newFileInRoot);
   document.getElementById('refreshTreeBtn').addEventListener('click', renderFileTree);
+	document.getElementById('openFolderEmptyBtn')?.addEventListener('click', addWorkspaceFolder);
 
   // Welcome screen
   document.getElementById('welcomeOpenFolder').addEventListener('click', addWorkspaceFolder);
