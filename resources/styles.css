@@ -450,6 +450,7 @@ html, body {
 
 .welcome-content h1 { font-size: 30px; font-weight: 300; color: var(--text-primary); margin-bottom: 6px; }
 .welcome-content > p { font-size: 14px; margin-bottom: 22px; }
+.welcome-hint { font-size: 16px !important; color: var(--text-muted) !important; margin-bottom: 20px !important; }
 .welcome-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
 
 .welcome-shortcuts {
@@ -465,16 +466,23 @@ html, body {
   gap: 10px;
   font-size: 13px;
   color: var(--text-muted);
+  width: 220px;
+}
+
+.shortcut-row kbd {
+  flex-shrink: 0;
+  width: 90px;
+  text-align: center;
 }
 
 kbd {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  background: #1a6bb5;
+  border: 1px solid #2282d8;
   border-radius: 4px;
   padding: 2px 7px;
   font-size: 12px;
   font-family: var(--font-mono);
-  color: var(--text-primary);
+  color: #fff;
 }
 
 /* ── CodeMirror overrides ── */

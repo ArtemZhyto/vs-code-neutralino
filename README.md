@@ -9,7 +9,7 @@ A VS Code-inspired desktop code editor built with **NeutralinoJS**, **CodeMirror
 - **Multi-file tabbed editor** — syntax highlighting for 17+ languages, code folding, bracket matching, autocomplete
 - **Dark / Light themes** — `one-dark` (dark) and `eclipse` (light), toggle in title bar
 - **Find & Replace** — inline bar with match count, Replace One / All, match highlighting
-- **File Explorer** — multi-folder workspace, file tree with polling, right-click context menu (New, Rename, Delete, Remove Folder)
+- **File Explorer** — multi-folder workspace, file tree with polling, right-click context menu (New, Rename, Delete, Remove Folder, Open in Explorer)
 - **Search in Files** — `Ctrl+Shift+F` searches across all workspace folders, click result to jump to line
 - **Image & Video preview** — images open inline, videos open in a modal player, binary files are blocked
 - **Integrated Terminal** — run Python, JS, C/C++, Java, Rust, Go, Ruby, PHP, Shell, HTML with one shortcut
@@ -23,7 +23,9 @@ A VS Code-inspired desktop code editor built with **NeutralinoJS**, **CodeMirror
 
 | Shortcut | Action |
 |----------|--------|
+| `Ctrl+N` | New file |
 | `Ctrl+S` | Save |
+| `Ctrl+W` | Close tab |
 | `Ctrl+Enter` | Run file |
 | `Ctrl+`` ` `` | Toggle terminal |
 | `Ctrl+F` | Find |
@@ -33,6 +35,7 @@ A VS Code-inspired desktop code editor built with **NeutralinoJS**, **CodeMirror
 | `Ctrl+=` / `Ctrl+-` / `Ctrl+0` | Zoom in / out / reset |
 | `Alt+Z` | Word wrap |
 | `Ctrl+Space` | Autocomplete |
+| Middle-click tab | Close tab |
 
 ---
 

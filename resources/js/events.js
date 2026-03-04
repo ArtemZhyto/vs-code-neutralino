@@ -116,6 +116,9 @@ function _bindContextMenuEvents() {
   document.getElementById('ctxOpen').addEventListener('click', async () => {
     await ctxOpenFile(); hideContextMenu();
   });
+  document.getElementById('ctxOpenInExplorer').addEventListener('click', async () => {
+    await ctxOpenInExplorer(); hideContextMenu();
+  });
   document.getElementById('ctxRename').addEventListener('click', async () => {
     await ctxRename(); hideContextMenu();
   });
@@ -196,6 +199,8 @@ function _bindFindReplaceEvents() {
 function _bindGlobalShortcuts() {
   document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.key === 's')  { e.preventDefault(); saveCurrentFile(); }
+    if (e.ctrlKey && e.key === 'n')  { e.preventDefault(); newFileInRoot(); }
+    if (e.ctrlKey && e.key === 'w')  { e.preventDefault(); if (state.activeTabPath) closeTab(state.activeTabPath); }
     if (e.ctrlKey && e.key === '`')  { e.preventDefault(); toggleTerminal(); }
     if (e.ctrlKey && e.key === 'f' && !editor?.hasFocus()) { e.preventDefault(); openFindBar(false); }
     if (e.ctrlKey && e.key === 'h' && !editor?.hasFocus()) { e.preventDefault(); openFindBar(true);  }

@@ -11,13 +11,15 @@ function showContextMenu(x, y, isDir) {
   menu.style.display = 'block';
 
   const vw = window.innerWidth, vh = window.innerHeight;
-  const mw = 185, mh = isWorkspace ? 60 : 200;
+  const mw = 185, mh = isWorkspace ? 90 : 220;
   menu.style.left = Math.min(x, vw - mw) + 'px';
   menu.style.top  = Math.min(y, vh - mh) + 'px';
 
-  document.getElementById('ctxRemoveFolder').style.display = isWorkspace ? 'flex'  : 'none';
-  document.getElementById('ctxRemoveSep').style.display    = isWorkspace ? 'block' : 'none';
-  document.getElementById('ctxOpen').style.display        = isWorkspace || isDir ? 'none' : 'flex';
+  document.getElementById('ctxRemoveFolder').style.display  = isWorkspace ? 'flex'  : 'none';
+  document.getElementById('ctxRemoveSep').style.display     = isWorkspace ? 'block' : 'none';
+  document.getElementById('ctxOpen').style.display         = isWorkspace || isDir ? 'none' : 'flex';
+  // "Open in Explorer" is available for all target types
+  document.getElementById('ctxOpenInExplorer').style.display = 'flex';
 
   ['ctxNewFile', 'ctxNewFolder', 'ctxRename', 'ctxDelete'].forEach(id => {
     const el = document.getElementById(id);
@@ -173,6 +175,19 @@ async function ctxNewFolder() {
     state.expandedNodes.add(path);
     renderFileTree();
   } catch (err) { terminalPrint('stderr', 'Create folder failed: ' + err.message); }
+}
+
+// ── Open containing folder in system file manager ─────────────────────────────
+
+async function ctxOpenInExplorer() {
+  if (!state.ctxTarget) return;
+  if (!isNL()) { terminalPrint('info', 'Open in Explorer requires Neutralino runtime.'); return; }
+  const { path, type } = state.ctxTarget;
+  // For files, open the parent directory; for dirs and workspace, open the dir itself
+  const dirToOpen = type === 'file' ? getDir(path) : path;
+  try {
+    await Neutralino.os.open(dirToOpen);
+  } catch (err) { terminalPrint('stderr', 'Open in Explorer failed: ' + err.message); }
 }
 
 // ── New file from sidebar header button ───────────────────────────────────────

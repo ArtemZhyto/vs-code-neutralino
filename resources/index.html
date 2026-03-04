@@ -117,12 +117,14 @@
         <div class="welcome-screen" id="welcomeScreen">
           <div class="welcome-content">
             <h1>CodeXplorer</h1>
-            <p>A VS Code-like IDE powered by NeutralinoJS + Gemini AI</p>
+            <p class="welcome-hint">Open a file or folder to start editing</p>
             <div class="welcome-actions">
               <button id="welcomeOpenFolder" class="btn-primary">Open Folder</button>
             </div>
             <div class="welcome-shortcuts">
+              <div class="shortcut-row"><kbd>Ctrl+N</kbd> New file</div>
               <div class="shortcut-row"><kbd>Ctrl+S</kbd> Save file</div>
+              <div class="shortcut-row"><kbd>Ctrl+W</kbd> Close tab</div>
               <div class="shortcut-row"><kbd>Ctrl+Enter</kbd> Run file</div>
               <div class="shortcut-row"><kbd>Ctrl+`</kbd> Toggle terminal</div>
             </div>
@@ -238,6 +240,7 @@
     <button class="ctx-item" id="ctxRemoveFolder" style="display:none">Remove Folder</button>
     <div class="ctx-separator" id="ctxRemoveSep" style="display:none"></div>
     <button class="ctx-item" id="ctxOpen">Open / Edit</button>
+    <button class="ctx-item" id="ctxOpenInExplorer">Open in Explorer</button>
     <div class="ctx-separator"></div>
     <button class="ctx-item" id="ctxNewFile">New File Here</button>
     <button class="ctx-item" id="ctxNewFolder">New Folder Here</button>

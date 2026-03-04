@@ -36,6 +36,11 @@ function renderTabs() {
       closeTab(tab.path);
     });
 
+    // Middle-click closes the tab
+    div.addEventListener('auxclick', e => {
+      if (e.button === 1) { e.preventDefault(); closeTab(tab.path); }
+    });
+
     list.appendChild(div);
   }
 }
