@@ -35,7 +35,6 @@ A VS Code-inspired desktop code editor built with **NeutralinoJS**, **CodeMirror
 | `Ctrl+=` / `Ctrl+-` / `Ctrl+0` | Zoom in / out / reset |
 | `Alt+Z` | Word wrap |
 | `Ctrl+Space` | Autocomplete |
-| Middle-click tab | Close tab |
 
 ---
 
@@ -80,3 +79,4 @@ neu build
 ## License
 
 MIT
+
