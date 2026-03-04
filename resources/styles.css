@@ -485,6 +485,41 @@ kbd {
   line-height: 1.65 !important;
 }
 
+/* Dark editor background fix */
+.theme-dark .CodeMirror {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+.theme-dark .CodeMirror .cm-keyword { color: #569cd6 !important; }
+.theme-dark .CodeMirror .cm-string { color: #ce9178 !important; }
+.theme-dark .CodeMirror .cm-comment { color: #6a9955 !important; }
+.theme-dark .CodeMirror .cm-variable { color: #9cdcfe !important; }
+.theme-dark .CodeMirror .cm-number { color: #b5cea8 !important; }
+.theme-dark .CodeMirror .cm-def { color: #dcdcaa !important; }
+.theme-dark .CodeMirror-gutters {
+  background-color: var(--bg-primary) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+.theme-dark .CodeMirror-linenumber {
+  color: var(--text-muted) !important;
+}
+.theme-dark .CodeMirror-activeline-background {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+.theme-dark .CodeMirror-cursor {
+  border-left: 2px solid var(--text-active) !important;
+}
+.theme-dark .CodeMirror-selected {
+  background-color: rgba(38, 79, 120, 0.6) !important;
+}
+.theme-dark .CodeMirror-focused .CodeMirror-selected {
+  background-color: rgba(38, 79, 120, 0.9) !important;
+}
+.theme-dark .CodeMirror-line::selection,
+.theme-dark .CodeMirror-line > span::selection,
+.theme-dark .CodeMirror-line > span > span::selection {
+  background-color: rgba(38, 79, 120, 0.6) !important;
+}
 /* Dark editor: override background only — let one-dark theme handle all token colors */
 .theme-dark .CodeMirror,
 .theme-dark .CodeMirror-scroll { background: #1e1e1e !important; }
