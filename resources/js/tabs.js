@@ -74,3 +74,20 @@ function markTabModified(filePath, modified) {
   const tab = state.openTabs.find(t => t.path === filePath);
   if (tab) { tab.modified = modified; renderTabs(); }
 }
+
+function cycleTabs(direction) {
+  if (state.openTabs.length <= 1) return;
+
+  const currentIndex = state.openTabs.findIndex(t => t.path === state.activeTabPath);
+  let nextIndex;
+
+  if (direction === 'next') {
+    nextIndex = (currentIndex + 1) % state.openTabs.length;
+  } else {
+    nextIndex = (currentIndex - 1 + state.openTabs.length) % state.openTabs.length;
+  }
+
+  const nextTab = state.openTabs[nextIndex];
+  setActiveTab(nextTab.path);
+  loadEditorContent(nextTab.path, nextTab.name);
+}

@@ -202,6 +202,10 @@ function _bindGlobalShortcuts() {
     if (e.ctrlKey && e.key === 's')  { e.preventDefault(); saveCurrentFile(); }
     if (e.ctrlKey && e.key === 'n')  { e.preventDefault(); newFileInRoot(); }
     if (e.ctrlKey && e.key === 'w')  { e.preventDefault(); if (state.activeTabPath) closeTab(state.activeTabPath); }
+		if (e.ctrlKey && e.key === 'Tab') {
+      e.preventDefault();
+      cycleTabs(e.shiftKey ? 'prev' : 'next');
+    }
     if (e.ctrlKey && e.key === '`')  { e.preventDefault(); toggleTerminal(); }
     if (e.ctrlKey && e.key === 'f' && !editor?.hasFocus()) { e.preventDefault(); openFindBar(false); }
     if (e.ctrlKey && e.key === 'h' && !editor?.hasFocus()) { e.preventDefault(); openFindBar(true);  }
